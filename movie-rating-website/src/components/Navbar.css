@@ -1,0 +1,29 @@
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:black;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:bold;
+  color:red;
+  text-decoration:none;
+}
+
+.nav-links a{
+  margin-left:20px;
+  text-decoration:none;
+  color:white;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+.nav-links a:hover{
+  color:red;
+}

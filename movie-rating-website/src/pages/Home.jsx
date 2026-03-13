@@ -1,67 +1,147 @@
-import { useState } from "react";
-import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
+import HeroBanner from "../components/HeroBanner";
+import { fetchMovies, searchMovies, fetchMoviesByGenre } from "../tmdb";
+import "./Home.css";
 
 function Home() {
 
-  const movies = [
-    {
-      id: 1,
-      title: "Avengers Endgame",
-      genre: "Action",
-      year: 2019,
-      rating: 4.8,
-      poster: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
-    },
-    {
-      id: 2,
-      title: "Interstellar",
-      genre: "Sci-Fi",
-      year: 2014,
-      rating: 4.7,
-      poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
-    },
-    {
-      id: 3,
-      title: "Joker",
-      genre: "Drama",
-      year: 2019,
-      rating: 4.5,
-      poster: "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"
-    }
-  ];
-
+  const [movies, setMovies] = useState([]);
   const [search, setSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
-  const filteredMovies = movies.filter(movie =>
-    movie.title.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+
+    const loadMovies = async () => {
+      const data = await fetchMovies();
+      setMovies(data);
+    };
+
+    loadMovies();
+
+  }, []);
+
+  /* SEARCH */
+
+  const handleSearch = async (e) => {
+
+    e.preventDefault();
+
+    if (search.trim() === "") {
+
+      const data = await fetchMovies();
+      setMovies(data);
+
+    } else {
+
+      const data = await searchMovies(search);
+      setMovies(data);
+      setSuggestions([]);
+
+    }
+  };
+
+  /* LIVE SEARCH */
+
+  const handleChange = async (e) => {
+
+    const value = e.target.value;
+    setSearch(value);
+
+    if (value.length > 2) {
+
+      const data = await searchMovies(value);
+      setSuggestions(data.slice(0,5));
+
+    } else {
+
+      setSuggestions([]);
+
+    }
+
+  };
+
+  /* GENRE */
+
+  const handleGenre = async (genreId) => {
+
+    const data = await fetchMoviesByGenre(genreId);
+    setMovies(data);
+
+  };
 
   return (
     <div>
 
-      <Navbar />
+      {/* GENRE BUTTONS */}
 
-      <h1 style={{ textAlign: "center" }}>Movie Rating Website</h1>
+      <div className="genre-buttons">
 
-      <div style={{ textAlign: "center", margin: "20px" }}>
+        <button onClick={() => handleGenre(28)}>Action</button>
+        <button onClick={() => handleGenre(35)}>Comedy</button>
+        <button onClick={() => handleGenre(27)}>Horror</button>
+        <button onClick={() => handleGenre(16)}>Animation</button>
+
+      </div>
+
+
+      {/* SEARCH BAR */}
+
+      <form onSubmit={handleSearch} className="search-bar">
+
         <input
           type="text"
           placeholder="Search movie..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "250px",
-            borderRadius: "5px"
-          }}
+          onChange={handleChange}
         />
-      </div>
+
+        <button type="submit">Search</button>
+
+        {suggestions.length > 0 && (
+
+          <div className="suggestion-box">
+
+            {suggestions.map((movie) => (
+              <div
+                key={movie.id}
+                className="suggestion-item"
+                onClick={() => {
+                  setSearch(movie.title);
+                  setSuggestions([]);
+                }}
+              >
+                {movie.title}
+              </div>
+            ))}
+
+          </div>
+
+        )}
+
+      </form>
+
+
+      {/* HERO BANNER */}
+
+      {movies.length > 0 && <HeroBanner movie={movies[0]} />}
+
+
+      {/* TITLE */}
+
+      <h2 style={{ marginLeft: "40px", marginTop: "30px" }}>
+        🔥 Trending Movies
+      </h2>
+
+
+      {/* MOVIE GRID */}
 
       <div className="movie-container">
-        {filteredMovies.map((movie) => (
+
+        {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
+
       </div>
 
     </div>

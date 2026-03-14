@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar({ showTrending, showTopRated }) {
   return (
     <div className="navbar">
 
-      <Link to="/" className="logo">
+      <div className="logo">
         MOVIEFLIX
-      </Link>
+      </div>
 
       <div className="nav-links">
-        <Link to="/">Home</Link>
-        <a href="#">Trending</a>
-        <a href="#">Top Rated</a>
+
+        
+       
+
       </div>
 
     </div>

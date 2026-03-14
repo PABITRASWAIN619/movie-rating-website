@@ -85,11 +85,11 @@ body{
 
 /* MOVIE GRID */
 
-.movie-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:30px;
-  padding:40px;
+.movie-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap: 30px;
+  padding: 40px;
 }
 
 /* MOVIE CARD */
@@ -181,4 +181,23 @@ body{
 .movie-info{
   padding:10px;
   text-align:center;
+}
+.top-buttons{
+display:flex;
+justify-content:flex-end;
+gap:10px;
+margin:20px 40px;
+}
+
+.top-buttons button{
+padding:8px 14px;
+border:none;
+background:white;
+cursor:pointer;
+border-radius:6px;
+font-weight:bold;
+}
+
+.top-buttons button:hover{
+background:#ddd;
 }

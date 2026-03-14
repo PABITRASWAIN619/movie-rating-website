@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 import HeroBanner from "../components/HeroBanner";
-import { fetchMovies, searchMovies, fetchMoviesByGenre } from "../tmdb";
+
+import {
+  fetchMovies,
+  fetchTopRated,
+  searchMovies,
+  fetchMoviesByGenre
+} from "../tmdb";
+
 import "./Home.css";
 
 function Home() {
@@ -10,39 +17,39 @@ function Home() {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  /* LOAD TRENDING MOVIES */
   useEffect(() => {
-
-    const loadMovies = async () => {
-      const data = await fetchMovies();
-      setMovies(data);
-    };
-
-    loadMovies();
-
+    loadTrending();
   }, []);
 
-  /* SEARCH */
+  const loadTrending = async () => {
+    const data = await fetchMovies();
+    setMovies(data);
+  };
 
+  /* LOAD TOP RATED */
+  const loadTopRated = async () => {
+    const data = await fetchTopRated();
+    setMovies(data);
+  };
+
+  /* SEARCH MOVIE */
   const handleSearch = async (e) => {
 
     e.preventDefault();
 
     if (search.trim() === "") {
-
-      const data = await fetchMovies();
-      setMovies(data);
-
-    } else {
-
-      const data = await searchMovies(search);
-      setMovies(data);
-      setSuggestions([]);
-
+      loadTrending();
+      return;
     }
+
+    const data = await searchMovies(search);
+    setMovies(data);
+    setSuggestions([]);
+
   };
 
   /* LIVE SEARCH */
-
   const handleChange = async (e) => {
 
     const value = e.target.value;
@@ -61,8 +68,7 @@ function Home() {
 
   };
 
-  /* GENRE */
-
+  /* GENRE FILTER */
   const handleGenre = async (genreId) => {
 
     const data = await fetchMoviesByGenre(genreId);
@@ -71,15 +77,34 @@ function Home() {
   };
 
   return (
+
     <div>
+
+      {/* TOP BUTTONS */}
+
+      <div className="top-buttons">
+
+        <button onClick={loadTrending}>
+          Trending
+        </button>
+
+        <button onClick={loadTopRated}>
+          Top Rated
+        </button>
+
+      </div>
+
 
       {/* GENRE BUTTONS */}
 
       <div className="genre-buttons">
 
         <button onClick={() => handleGenre(28)}>Action</button>
+
         <button onClick={() => handleGenre(35)}>Comedy</button>
+
         <button onClick={() => handleGenre(27)}>Horror</button>
+
         <button onClick={() => handleGenre(16)}>Animation</button>
 
       </div>
@@ -96,13 +121,19 @@ function Home() {
           onChange={handleChange}
         />
 
-        <button type="submit">Search</button>
+        <button type="submit">
+          Search
+        </button>
+
+
+        {/* SEARCH SUGGESTIONS */}
 
         {suggestions.length > 0 && (
 
           <div className="suggestion-box">
 
             {suggestions.map((movie) => (
+
               <div
                 key={movie.id}
                 className="suggestion-item"
@@ -113,6 +144,7 @@ function Home() {
               >
                 {movie.title}
               </div>
+
             ))}
 
           </div>
@@ -124,13 +156,15 @@ function Home() {
 
       {/* HERO BANNER */}
 
-      {movies.length > 0 && <HeroBanner movie={movies[0]} />}
+      {movies.length > 0 && (
+        <HeroBanner movie={movies[0]} />
+      )}
 
 
       {/* TITLE */}
 
       <h2 style={{ marginLeft: "40px", marginTop: "30px" }}>
-        🔥 Trending Movies
+        🔥 Movies
       </h2>
 
 
@@ -139,12 +173,16 @@ function Home() {
       <div className="movie-container">
 
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+          />
         ))}
 
       </div>
 
     </div>
+
   );
 }
 

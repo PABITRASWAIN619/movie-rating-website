@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 import HeroBanner from "../components/HeroBanner";
+import Footer from "../components/Footer";
 
 import {
   fetchMovies,
@@ -193,8 +194,18 @@ function Home() {
         ))}
 
       </div>
+      <div className="movie-container">
+  {movies.map((movie) => (
+    <MovieCard key={movie.id} movie={movie} />
+  ))}
+</div>
+
+<Footer loadTrending={loadTrending}
+  loadTopRated={loadTopRated}
+  handleGenre={handleGenre} />
 
     </div>
+    
 
   );
 }

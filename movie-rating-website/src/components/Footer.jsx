@@ -1,10 +1,12 @@
+import { FaXTwitter } from "react-icons/fa6";
 import "./Footer.css";
 
 import {
   FaGithub,
   FaLinkedin,
   FaInstagram,
-  FaFacebook
+  FaFacebook,
+  FaTelegram
 } from "react-icons/fa";
 
 function Footer({ loadTrending, loadTopRated, handleGenre }) {
@@ -15,7 +17,7 @@ function Footer({ loadTrending, loadTopRated, handleGenre }) {
 
         {/* BRAND */}
         <div className="footer-section">
-          <h2 className="footer-logo">🎬 MovieVerse</h2>
+          <h2 className="footer-logo">🎬 Movieflix</h2>
           <p>
             Discover trending, top rated and popular movies
             powered by the TMDB API.
@@ -43,19 +45,19 @@ function Footer({ loadTrending, loadTopRated, handleGenre }) {
           <div className="social-icons">
 
             <a
-              href="https://github.com/yourusername"
+              href="https://x.com/X"
               target="_blank"
               rel="noreferrer"
             >
-              <FaGithub />
+              <FaXTwitter/>
             </a>
 
             <a
-              href="https://linkedin.com/in/yourusername"
+              href="https://web.telegram.org/a/"
               target="_blank"
               rel="noreferrer"
             >
-              <FaLinkedin />
+              <FaTelegram />
             </a>
 
             <a
@@ -86,7 +88,7 @@ function Footer({ loadTrending, loadTopRated, handleGenre }) {
       </div>
 
       <div className="footer-bottom">
-        © 2026 MovieVerse | Built with React 🚀
+        © 2026 Movieflix | Built with React 🚀
       </div>
 
     </footer>

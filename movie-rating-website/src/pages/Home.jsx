@@ -19,25 +19,33 @@ function Home() {
   const [suggestions, setSuggestions] = useState([]);
   const [activeGenre, setActiveGenre] = useState(null);
 
-  /* LOAD TRENDING MOVIES */
+  /* LOAD TRENDING */
   useEffect(() => {
     loadTrending();
   }, []);
 
   const loadTrending = async () => {
-    setActiveGenre(null);
-    const data = await fetchMovies();
-    setMovies(data);
+    try {
+      setActiveGenre(null);
+      const data = await fetchMovies();
+      setMovies(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  /* LOAD TOP RATED */
+  /* TOP RATED */
   const loadTopRated = async () => {
-    setActiveGenre(null);
-    const data = await fetchTopRated();
-    setMovies(data);
+    try {
+      setActiveGenre(null);
+      const data = await fetchTopRated();
+      setMovies(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  /* SEARCH MOVIE */
+  /* SEARCH */
   const handleSearch = async (e) => {
 
     e.preventDefault();
@@ -66,14 +74,13 @@ function Home() {
     }
   };
 
-  /* GENRE FILTER */
+  /* GENRE */
   const handleGenre = async (genreId) => {
 
     setActiveGenre(genreId);
 
     const data = await fetchMoviesByGenre(genreId);
     setMovies(data);
-
   };
 
   return (
@@ -83,18 +90,13 @@ function Home() {
       {/* TOP BUTTONS */}
       <div className="top-buttons">
 
-        <button onClick={loadTrending}>
-          Trending
-        </button>
+        <button onClick={loadTrending}>Trending</button>
 
-        <button onClick={loadTopRated}>
-          Top Rated
-        </button>
+        <button onClick={loadTopRated}>Top Rated</button>
 
       </div>
 
-
-      {/* GENRE BUTTONS */}
+      {/* GENRE */}
       <div className="genre-buttons">
 
         <button
@@ -129,8 +131,7 @@ function Home() {
 
       </div>
 
-
-      {/* SEARCH BAR */}
+      {/* SEARCH */}
       <form onSubmit={handleSearch} className="search-bar">
 
         <input
@@ -140,11 +141,8 @@ function Home() {
           onChange={handleChange}
         />
 
-        <button type="submit">
-          Search
-        </button>
+        <button type="submit">Search</button>
 
-        {/* SEARCH SUGGESTIONS */}
         {suggestions.length > 0 && (
 
           <div className="suggestion-box">
@@ -170,42 +168,31 @@ function Home() {
 
       </form>
 
-
-      {/* HERO BANNER */}
+      {/* HERO */}
       {movies.length > 0 && (
         <HeroBanner movie={movies[0]} />
       )}
 
-
-      {/* TITLE */}
+      {/* MOVIES */}
       <h2 style={{ marginLeft: "40px", marginTop: "30px" }}>
         🔥 Movies
       </h2>
 
-
-      {/* MOVIE GRID */}
       <div className="movie-container">
 
         {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-          />
+          <MovieCard key={movie.id} movie={movie} />
         ))}
 
       </div>
-      <div className="movie-container">
-  {movies.map((movie) => (
-    <MovieCard key={movie.id} movie={movie} />
-  ))}
-</div>
 
-<Footer loadTrending={loadTrending}
-  loadTopRated={loadTopRated}
-  handleGenre={handleGenre} />
+      <Footer
+        loadTrending={loadTrending}
+        loadTopRated={loadTopRated}
+        handleGenre={handleGenre}
+      />
 
     </div>
-    
 
   );
 }

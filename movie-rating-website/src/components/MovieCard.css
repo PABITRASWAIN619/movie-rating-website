@@ -18,7 +18,28 @@
 }
 
 .movie-info {
-  padding: 12px;
+  padding: 12px;.movie-card-wrapper {
+  position: relative;
+  margin: 15px;
+  display: inline-block;
+  text-align: center;
+}
+
+.trailer-btn {
+  margin-top: 8px;
+  background: red;
+  border: none;
+  padding: 8px 14px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.trailer-btn:hover {
+  transform: scale(1.05);
+  background: darkred;
+}
   text-align: center;
 }
 
